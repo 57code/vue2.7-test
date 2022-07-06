@@ -1,0 +1,22 @@
+<div id="app">
+  {{counter}}
+  <input type="number" v-model="counter">
+</div>
+
+<script src="http://unpkg.com/vue@2.7"></script>
+<script>
+  const { ref } = Vue
+  new Vue({
+    data() {
+      console.log('data');
+      return {
+        counter: 100
+      }
+    },
+    setup() {
+      console.log('setup');
+      const counter = ref(0)
+      return { counter }
+    }
+  }).$mount('#app')
+</script>

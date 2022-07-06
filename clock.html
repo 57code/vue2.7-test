@@ -1,0 +1,73 @@
+<div id="app">
+  <p class="date">{{dateToDisplay}}</p>
+  <p class="time">
+    <span>{{hour}}</span>
+    <span style="width: 120px">{{colon}}</span>
+    <span>{{second}}</span>
+  </p>
+  <p v-once class="ver">vue {{ver}}</p>
+</div>
+<style>
+  body {
+    background: #000;
+  }
+
+  p {
+    color: #fff;
+    text-align: center;
+  }
+
+  .date {
+    font-size: 36px;
+  }
+
+  @font-face {
+    font-family: 'digifacewide';
+    src: url('./font/digifacewide.ttf');
+  }
+
+  .time {
+    font-size: 300px;
+    font-family: 'digifacewide', serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .ver {
+    color: darkgrey;
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    margin-left: -34px;
+  }
+</style>
+<script src="http://unpkg.com/vue@2.7"></script>
+<script>
+  const { ref, computed } = Vue
+
+  function pad(num) {
+    return num < 10 ? '0' + num : num
+  }
+
+  function getColon(second) {
+    return second % 2 === 0 ? ':' : ''
+  }
+
+  new Vue({
+    setup() {
+      const time = ref(new Date())
+      const dateToDisplay = computed(() => `${time.value.getMonth() + 1}月${time.value.getDay()}日`)
+      const hour = computed(() => pad(time.value.getHours()))
+      const colon = computed(() => getColon(time.value.getSeconds()))
+      const second = computed(() => pad(time.value.getMinutes()))
+      setInterval(() => {
+        time.value = new Date()
+      }, 1000)
+
+      const ver = ref(Vue.version)
+
+      return { dateToDisplay, hour, colon, second, ver }
+    }
+  }).$mount('#app')
+</script>
